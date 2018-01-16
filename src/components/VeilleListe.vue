@@ -35,17 +35,10 @@ export default {
       themes: [],
       sortKey: 'title',
       subjects: [
-<<<<<<< HEAD
         { title: 'Tout savoir sur VueJS', author: 'Raphael', themes: ['VueJS', 'JS'], date: '2017-11-23T18:25:43.511Z' },
         { title: 'Angular VS ReactJS', author: 'Henry', themes: ['VueJS', 'Angular', 'JS'], date: '2018-01-10T18:25:43.511Z' },
         { title: 'Apprendre et étudier le JS', author: 'Victoria', themes: ['VueJS', 'JS'], date: '2017-12-12T18:25:43.511Z' },
         { title: 'Apprendre le CSS', author: 'Nicolas', themes: ['CSS'], date: '' }
-=======
-        { title: 'Tout savoir sur VueJS', author: 'Raphaël', themes: ['VueJS', 'JS'] },
-        { title: 'Apprendre et étudier le JS', author: 'Victoria', themes: ['VueJS', 'JS'] },
-        { title: 'Angular VS ReactJS', author: 'Éric', themes: ['ReactJS', 'Angular', 'JS'] },
-        { title: 'Apprendre le CSS', author: 'Nicolas', themes: ['CSS'] }
->>>>>>> 735254b919db49806986fc5ec23133dcac8620ee
       ],
     }
   },
