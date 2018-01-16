@@ -20,15 +20,15 @@
               persistent-hint
             ></v-select>
           </v-flex>
-      <!-- <select v-model="searchTheme">
-        <option value="all">Thématique</option>
-        <option v-for="(theme, index) in themes" v-bind:value="theme">{{ theme }}</option>
-      </select> -->
+       <select v-model="sortKey">
+        <option value="title">Titre</option>
+        <option value="date">Date</option>
+      </select>
     </v-layout>
     </div>
     <div class="subjects">
       <v-list three-line>
-          <template v-for="(subject,index) in subjectsFiltres">
+          <template v-for="(subject,index) in subjectsFiltered">
             <v-subheader v-if="subject.header" v-text="subject.header"></v-subheader>
             <v-divider v-else-if="subject.divider" v-bind:inset="subject.inset"></v-divider>
             <v-list-tile avatar v-else v-bind:key="subject.title" @click="">
@@ -36,8 +36,8 @@
                 <v-list-tile-title v-html="subject.title"></v-list-tile-title>
                 <v-list-tile-sub-title v-html="subject.author"></v-list-tile-sub-title>             
               </v-list-tile-content>
-               <v-list-tile-action>
-                 <small>02/02/17</small>
+               <v-list-tile-action v-if="subject.date">
+                 <small>{{ subject.date | formatDate }}</small>
                </v-list-tile-action>
             </v-list-tile>
           </template>
@@ -48,6 +48,8 @@
 </template>
 <script>
 /* eslint-disable */
+import moment from 'moment';
+
 export default {
   name: 'VeilleListe',
   data () {
@@ -55,11 +57,12 @@ export default {
       searchTxt: '',
       searchTheme: 'Thématique',
       themes: [],
+      sortKey: 'title',
       subjects: [
-        { title: 'Tout savoir sur VueJS', author: 'Raphaël', themes: ['VueJS', 'JS'],date:"12/08/17"},
-        { title: 'Apprendre et étudier le JS', author: 'Victoria', themes: ['VueJS', 'JS'],date:"26/05/15"},
-        { title: 'Angular VS ReactJS', author: 'Éric', themes: ['ReactJS', 'Angular', 'JS'],date:"05/01/18"},
-        { title: 'Apprendre le CSS', author: 'Nicolas', themes: ['CSS'],date:"05/01/18"}
+        { title: 'Tout savoir sur VueJS', author: 'Raphael', themes: ['VueJS', 'JS'], date: '2017-11-23T18:25:43.511Z' },
+        { title: 'Angular VS ReactJS', author: 'Henry', themes: ['VueJS', 'Angular', 'JS'], date: '2018-01-10T18:25:43.511Z' },
+        { title: 'Apprendre et étudier le JS', author: 'Victoria', themes: ['VueJS', 'JS'], date: '2017-12-12T18:25:43.511Z' },
+        { title: 'Apprendre le CSS', author: 'Nicolas', themes: ['CSS'], date: '' }
       ],
     }
   },
@@ -67,10 +70,10 @@ export default {
     this.themes = this.getThemes();
   },
   computed: {
-    subjectsFiltres: function()
+    subjectsFiltered: function()
     {
        let self = this;
-       return this.subjects.filter(function(subject) {
+       let subjects = this.subjects.filter(function(subject) {
         
         // Filter on title and author
         let title = self.normlizeText(subject.title);
@@ -82,6 +85,9 @@ export default {
         let filter2 = subject.themes.indexOf(self.searchTheme) >= 0 || self.searchTheme == 'Thématique';
         return filter1 && filter2;
       });
+
+      // Return sorted subject
+      return subjects.sort(this.sortBy);
     }
   },
   methods: {
@@ -106,6 +112,31 @@ export default {
      var themesSorted = themes.sort();
      themesSorted.splice(0,0,"Thématique");
      return themesSorted;
+    },
+    sortBy(a, b) {
+      // Sort by date (desc)
+      if(this.sortKey == 'date') {
+        a = new Date(a.date);
+        b = new Date(b.date);
+        return b-a;
+      }
+      // Sort by title
+      else {
+        if (a.title < b.title) {
+          return -1;
+        }
+        if (a.title > b.title) {
+          return 1;
+        }
+        return 0;
+      }
+    }
+  },
+  filters: {
+    formatDate: function(value) {
+      if (value) {
+        return moment(String(value)).format('DD/MM/YY');
+      }
     }
   }
 }

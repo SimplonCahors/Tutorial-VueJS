@@ -1,4 +1,3 @@
-/* eslint-disable */
 <template>
   <div id="app">
     <img src="./assets/logo.png">
@@ -9,7 +8,7 @@
 
 <script>
 /* eslint-disable */
-import VeilleListe from './components/VeilleListe'
+import VeilleListe from './components/VeilleListe';
 
 
 export default {
