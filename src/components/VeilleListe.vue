@@ -6,7 +6,7 @@
         placeholder="Rechercher"
         v-model="searchTxt" />
       <select v-model="searchTheme">
-        <option value="">Thématique</option>
+        <option value="all">Thématique</option>
         <option v-for="(theme, index) in themes" v-bind:value="theme">{{ theme }}</option>
       </select>
       <select v-model="sortKey">
@@ -31,14 +31,21 @@ export default {
   data () {
     return {
       searchTxt: '',
-      searchTheme: '',
+      searchTheme: 'all',
       themes: [],
       sortKey: 'title',
       subjects: [
+<<<<<<< HEAD
         { title: 'Tout savoir sur VueJS', author: 'Raphael', themes: ['VueJS', 'JS'], date: '2017-11-23T18:25:43.511Z' },
         { title: 'Angular VS ReactJS', author: 'Henry', themes: ['VueJS', 'Angular', 'JS'], date: '2018-01-10T18:25:43.511Z' },
         { title: 'Apprendre et étudier le JS', author: 'Victoria', themes: ['VueJS', 'JS'], date: '2017-12-12T18:25:43.511Z' },
         { title: 'Apprendre le CSS', author: 'Nicolas', themes: ['CSS'], date: '' }
+=======
+        { title: 'Tout savoir sur VueJS', author: 'Raphaël', themes: ['VueJS', 'JS'] },
+        { title: 'Apprendre et étudier le JS', author: 'Victoria', themes: ['VueJS', 'JS'] },
+        { title: 'Angular VS ReactJS', author: 'Éric', themes: ['ReactJS', 'Angular', 'JS'] },
+        { title: 'Apprendre le CSS', author: 'Nicolas', themes: ['CSS'] }
+>>>>>>> 735254b919db49806986fc5ec23133dcac8620ee
       ],
     }
   },
@@ -58,7 +65,7 @@ export default {
         let filter1 = title.indexOf(searchTxt) >= 0 || author.indexOf(searchTxt) >= 0;
         
         // Filter on theme
-        let filter2 = subject.themes.indexOf(self.searchTheme) >= 0 || !self.searchTheme;
+        let filter2 = subject.themes.indexOf(self.searchTheme) >= 0 || self.searchTheme == 'all';
         
         return filter1 && filter2;
       });
@@ -77,8 +84,9 @@ export default {
     getThemes: function() {
       let themes = [];
       // Merge all themes
-      this.subjects.forEach(function(t) {
-        Array.prototype.push.apply(themes, t.themes);
+      this.subjects.forEach(function(subject) {
+        Array.prototype.push.apply(themes, subject.themes);
+      
       });
       // Remove duplicates
       themes = themes.filter(function(elem, index, self) {
