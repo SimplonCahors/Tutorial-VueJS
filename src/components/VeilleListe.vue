@@ -14,13 +14,11 @@
         <option value="date">Date</option>
       </select>
     </div>
-    <div class="subjects">
-      <ul>
-        <li v-for="(subject, index) in subjectsFiltres">
-          {{ subject.title }} <small>par {{ subject.author }}</small><small v-if="subject.date"> - {{ subject.date | formatDate }}</small>
-        </li>
-      </ul>
-    </div>
+    <ul>
+      <li v-for="(subject, index) in subjectsFiltered">
+        {{ subject.title }} <small>par {{ subject.author }}</small><small v-if="subject.date"> - {{ subject.date | formatDate }}</small>
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -48,7 +46,7 @@ export default {
     this.themes = this.getThemes();
   },
   computed: {
-    subjectsFiltres: function()
+    subjectsFiltered: function()
     {
        let self = this;
        let subjects = this.subjects.filter(function(subject) {
@@ -103,8 +101,8 @@ export default {
         }
         if (a.title > b.title) {
           return 1;
-          return 0;
         }
+        return 0;
       }
     }
   },
