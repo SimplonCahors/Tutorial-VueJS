@@ -9,11 +9,13 @@
         <option value="all">Thématique</option>
         <option v-for="(theme, index) in themes" v-bind:value="theme">{{ theme }}</option>
       </select>
+      <input type="checkbox" id="checkbox" v-model="sortByDate">
+      <label for="checkbox">Trier par date </label>
     </div>
     <div class="subjects">
       <ul>
         <li v-for="(subject, index) in subjectsFiltres">
-          {{ subject.title }} <small>par {{ subject.author }}</small>
+          {{ subject.title }} <small>par {{ subject.author }}, le {{subject.date}}</small>
         </li>
       </ul>
     </div>
@@ -29,37 +31,85 @@ export default {
       searchTxt: '',
       searchTheme: 'all',
       themes: [],
+      datestriees:[],
+     sortByDate :'',
       subjects: [
-        { title: 'Tout savoir sur VueJS', author: 'Raphaël', themes: ['VueJS', 'JS'] },
-        { title: 'Apprendre et étudier le JS', author: 'Victoria', themes: ['VueJS', 'JS'] },
-        { title: 'Angular VS ReactJS', author: 'Éric', themes: ['ReactJS', 'Angular', 'JS'] },
-        { title: 'Apprendre le CSS', author: 'Nicolas', themes: ['CSS'] }
+        { title: 'Tout savoir sur VueJS', author: 'Raphaël', themes: ['VueJS', 'JS'], date: '18/07/2017' },
+        { title: 'Apprendre et étudier le JS', author: 'Victoria', themes: ['VueJS', 'JS'], date: '15/03/2017'  },
+        { title: 'Angular VS ReactJS', author: 'Éric', themes: ['ReactJS', 'Angular', 'JS'], date: '23/07/2018'  },
+        { title: 'Apprendre le CSS', author: 'Nicolas', themes: ['CSS'], date: '18/07/1996'}
       ],
     }
   },
   created: function () {
     this.themes = this.getThemes();
   },
+  created: function () {
+    this.datestriees = this.getandsortDates();
+  },
+
+
   computed: {
+  
     subjectsFiltres: function()
     {
        let self = this;
+       let datestriees = self.datestriees;
+       let sujetstries = [];
+
        return this.subjects.filter(function(subject) {
         
-        // Filter on title and author
+        if(self.sortByDate) {
+          console.log(datestriees)
+        
+          for (let i = 0; i < datestriees.length; i++) {
+            //.gettime put it in ms to compare it 
+          const element = datestriees[i].getTime()
+          const valeur =self.tranformDate(subject.date)
+          console.log(element, valeur)
+          console.log(element == valeur)
+
+            //trouve la date de self qui correspond à celle du tableau triée
+               if (element == valeur) {
+                  sujetstries.push(subject.title)
+                  
+              }
+          }
+          console.log(sujetstries)
+        }
+        
+        else {
+
+     // Filter on title and author
+       
         let title = self.normlizeText(subject.title);
         let author = self.normlizeText(subject.author);
         let searchTxt = self.normlizeText(self.searchTxt);
         let filter1 = title.indexOf(searchTxt) >= 0 || author.indexOf(searchTxt) >= 0;
-        
+    
         // Filter on theme
         let filter2 = subject.themes.indexOf(self.searchTheme) >= 0 || self.searchTheme == 'all';
-        
-        return filter1 && filter2;
+  
+        return filter1 && filter2 ;
+        }
       });
-    }
+    },
+
   },
   methods: {
+
+sortdates: function (datex) {
+let x = datex.sort(function(a, b) {
+  return a - b;})
+      return x 
+},
+
+
+tranformDate: function (date) {
+let x = date.split('/').reverse().join('-')
+return Date.parse(x)
+},
+
     normlizeText: function(str) {
       // Change to lower case and remove first & last spaces
       str = str.toLowerCase().trim();
@@ -79,6 +129,29 @@ export default {
       });
       // Return sorted array
       return themes.sort();
+    },
+
+    getandsortDates: function() {
+      
+      let dates = [];
+      let datesdates = []
+      let self = this;
+      //gets all dates and put them in a [ ]
+       this.subjects.forEach(function(subject) {
+      let dateinms= self.tranformDate(subject.date);
+       dates.push(dateinms);
+       })
+       //sort 'em all
+        let datesfiltrees = self.sortdates(dates);
+   
+// return them as bootifull 
+        datesfiltrees.forEach( function(el) {
+          datesdates.push(new Date(el))
+           
+        })
+        console.log(datesdates)
+        return datesdates;  
+
     }
   }
 }
