@@ -9,6 +9,10 @@
         <option value="">Thématique</option>
         <option v-for="(theme, index) in themes" v-bind:value="theme">{{ theme }}</option>
       </select>
+      <select v-model="sortKey">
+        <option value="title">Titre</option>
+        <option value="date">Date</option>
+      </select>
     </div>
     <div class="subjects">
       <ul>
@@ -31,10 +35,11 @@ export default {
       searchTxt: '',
       searchTheme: '',
       themes: [],
+      sortKey: 'title',
       subjects: [
         { title: 'Tout savoir sur VueJS', author: 'Raphael', themes: ['VueJS', 'JS'], date: '2017-11-23T18:25:43.511Z' },
-        { title: 'Apprendre et étudier le JS', author: 'Victoria', themes: ['VueJS', 'JS'], date: '2017-12-12T18:25:43.511Z' },
         { title: 'Angular VS ReactJS', author: 'Henry', themes: ['VueJS', 'Angular', 'JS'], date: '2018-01-10T18:25:43.511Z' },
+        { title: 'Apprendre et étudier le JS', author: 'Victoria', themes: ['VueJS', 'JS'], date: '2017-12-12T18:25:43.511Z' },
         { title: 'Apprendre le CSS', author: 'Nicolas', themes: ['CSS'], date: '' }
       ],
     }
@@ -46,7 +51,7 @@ export default {
     subjectsFiltres: function()
     {
        let self = this;
-       return this.subjects.filter(function(subject) {
+       let subjects = this.subjects.filter(function(subject) {
         
         // Filter on title and author
         let title = self.normlizeText(subject.title);
@@ -59,6 +64,9 @@ export default {
         
         return filter1 && filter2;
       });
+
+      // Return sorted subject
+      return subjects.sort(this.sortBy);
     }
   },
   methods: {
@@ -80,6 +88,24 @@ export default {
       });
       // Return sorted array
       return themes.sort();
+    },
+    sortBy(a, b) {
+      // Sort by date (desc)
+      if(this.sortKey == 'date') {
+        a = new Date(a.date);
+        b = new Date(b.date);
+        return b-a;
+      }
+      // Sort by title
+      else {
+        if (a.title < b.title) {
+          return -1;
+        }
+        if (a.title > b.title) {
+          return 1;
+          return 0;
+        }
+      }
     }
   },
   filters: {
