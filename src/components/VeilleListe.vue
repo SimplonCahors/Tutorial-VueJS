@@ -13,7 +13,7 @@
     <div class="subjects">
       <ul>
         <li v-for="(subject, index) in subjectsFiltres">
-          {{ subject.title }} <small>par {{ subject.author }}</small>
+          {{ subject.title }} <small>par {{ subject.author }}</small><small v-if="subject.date"> - {{ subject.date | formatDate }}</small>
         </li>
       </ul>
     </div>
@@ -22,6 +22,8 @@
 
 <script>
 /* eslint-disable */
+import moment from 'moment';
+
 export default {
   name: 'VeilleListe',
   data () {
@@ -30,10 +32,10 @@ export default {
       searchTheme: '',
       themes: [],
       subjects: [
-        { title: 'Tout savoir sur VueJS', author: 'Raphael', themes: ['VueJS', 'JS'] },
-        { title: 'Apprendre et étudier le JS', author: 'Victoria', themes: ['VueJS', 'JS'] },
-        { title: 'Angular VS ReactJS', author: 'Henry', themes: ['VueJS', 'Angular', 'JS'] },
-        { title: 'Apprendre le CSS', author: 'Nicolas', themes: ['CSS'] }
+        { title: 'Tout savoir sur VueJS', author: 'Raphael', themes: ['VueJS', 'JS'], date: '2017-11-23T18:25:43.511Z' },
+        { title: 'Apprendre et étudier le JS', author: 'Victoria', themes: ['VueJS', 'JS'], date: '2017-12-12T18:25:43.511Z' },
+        { title: 'Angular VS ReactJS', author: 'Henry', themes: ['VueJS', 'Angular', 'JS'], date: '2018-01-10T18:25:43.511Z' },
+        { title: 'Apprendre le CSS', author: 'Nicolas', themes: ['CSS'], date: '' }
       ],
     }
   },
@@ -78,6 +80,13 @@ export default {
       });
       // Return sorted array
       return themes.sort();
+    }
+  },
+  filters: {
+    formatDate: function(value) {
+      if (value) {
+        return moment(String(value)).format('DD/MM/YY');
+      }
     }
   }
 }
