@@ -1,7 +1,6 @@
-/* eslint-disable */
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
+    <img class="hidden-xs-only" src="./assets/logo.png">
     <h2>Liste des veilles</h2>
     <VeilleListe/>
   </div>
