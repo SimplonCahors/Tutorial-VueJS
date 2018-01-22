@@ -2,8 +2,9 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App'
+import Add from './components/ajouter'
 import VueMaterial from 'vue-material'
-import VueRouter from 'vue-router'
+
 
 
 Vue.use(VueMaterial)
@@ -12,9 +13,27 @@ Vue.use(VueMaterial)
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
+
+const NotFound = { template: '<p>Page not found</p>' };
+const About = { template: '<p>about page</p>' }
+
+const routes = {
+  '/': App,
+  '/ajouter': Add
+}
+
 new Vue({
   el: '#app',
-  components: { App },
-  template: '<App/>'
+  data: {
+    currentRoute: window.location.pathname
+  },
+  computed: {
+    ViewComponent () {
+      return routes[this.currentRoute] || NotFound
+    }
+  },
+  render (h) {
+    return h(this.ViewComponent)
+  }
 })
 
