@@ -33,6 +33,7 @@ export default {
       themes: [],
       datestriees:[],
      sortByDate :'',
+     dateistrue:'',
       subjects: [
         { title: 'Tout savoir sur VueJS', author: 'Raphaël', themes: ['VueJS', 'JS'], date: '18/07/2017' },
         { title: 'Apprendre et étudier le JS', author: 'Victoria', themes: ['VueJS', 'JS'], date: '15/03/2017'  },
@@ -55,43 +56,45 @@ export default {
     {
        let self = this;
        let datestriees = self.datestriees;
-       let sujetstries = [];
+        let valeur= '';
+        let dateistrue = false;
 
        return this.subjects.filter(function(subject) {
-        
-        if(self.sortByDate) {
-          console.log(datestriees)
-        
-          for (let i = 0; i < datestriees.length; i++) {
-            //.gettime put it in ms to compare it 
-          const element = datestriees[i].getTime()
-          const valeur =self.tranformDate(subject.date)
-          console.log(element, valeur)
-          console.log(element == valeur)
-
-            //trouve la date de self qui correspond à celle du tableau triée
-               if (element == valeur) {
-                  sujetstries.push(subject.title)
-                  
-              }
-          }
-          console.log(sujetstries)
-        }
-        
-        else {
-
-     // Filter on title and author
+          // Filter on title and author
        
         let title = self.normlizeText(subject.title);
         let author = self.normlizeText(subject.author);
         let searchTxt = self.normlizeText(self.searchTxt);
+
+        if(self.sortByDate) {
+          dateistrue = false;
+          console.log(datestriees)
+        
+          for (let i = 0; i < datestriees.length; i++) {
+            //.gettime put it in ms to compare it 
+          const datetriee = datestriees[i].getTime();
+          valeur = self.tranformDate(subject.date)
+          console.log(datetriee, valeur)
+          console.log(datetriee == valeur)
+
+            //trouve la date de self qui correspond à celle du tableau triée
+               if (datetriee == valeur) {
+               
+      
+                 
+              }
+          }
+
+        }
+        
+      
         let filter1 = title.indexOf(searchTxt) >= 0 || author.indexOf(searchTxt) >= 0;
     
         // Filter on theme
         let filter2 = subject.themes.indexOf(self.searchTheme) >= 0 || self.searchTheme == 'all';
-  
+     
         return filter1 && filter2 ;
-        }
+      
       });
     },
 
