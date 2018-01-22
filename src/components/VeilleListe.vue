@@ -9,21 +9,23 @@
         <option value="all">Thématique</option>
         <option v-for="(theme, index) in themes" v-bind:value="theme">{{ theme }}</option>
       </select>
-      <input type="checkbox" id="checkbox" v-model="sortByDate">
-      <label for="checkbox">Trier par date </label>
+      <select v-model="sortKey">
+        <option value="title">Titre</option>
+        <option value="date">Date</option>
+      </select>
     </div>
-    <div class="subjects">
-      <ul>
-        <li v-for="(subject, index) in subjectsFiltres">
-          {{ subject.title }} <small>par {{ subject.author }}, le {{subject.date}}</small>
-        </li>
-      </ul>
-    </div>
+    <ul>
+      <li v-for="(subject, index) in subjectsFiltered">
+        {{ subject.title }} <small>par {{ subject.author }}</small><small v-if="subject.date"> - {{ subject.date | formatDate }}</small>
+      </li>
+    </ul>
   </div>
 </template>
 
 <script>
 /* eslint-disable */
+import moment from 'moment';
+
 export default {
   name: 'VeilleListe',
   data () {
@@ -31,14 +33,12 @@ export default {
       searchTxt: '',
       searchTheme: 'all',
       themes: [],
-      datestriees:[],
-     sortByDate :'',
-     dateistrue:'',
+      sortKey: 'title',
       subjects: [
-        { title: 'Tout savoir sur VueJS', author: 'Raphaël', themes: ['VueJS', 'JS'], date: '18/07/2017' },
-        { title: 'Apprendre et étudier le JS', author: 'Victoria', themes: ['VueJS', 'JS'], date: '15/03/2017'  },
-        { title: 'Angular VS ReactJS', author: 'Éric', themes: ['ReactJS', 'Angular', 'JS'], date: '23/07/2018'  },
-        { title: 'Apprendre le CSS', author: 'Nicolas', themes: ['CSS'], date: '18/07/1996'}
+        { title: 'Tout savoir sur VueJS', author: 'Raphael', themes: ['VueJS', 'JS'], date: '2017-11-23T18:25:43.511Z' },
+        { title: 'Angular VS ReactJS', author: 'Henry', themes: ['VueJS', 'Angular', 'JS'], date: '2018-01-10T18:25:43.511Z' },
+        { title: 'Apprendre et étudier le JS', author: 'Victoria', themes: ['VueJS', 'JS'], date: '2017-12-12T18:25:43.511Z' },
+        { title: 'Apprendre le CSS', author: 'Nicolas', themes: ['CSS'], date: '' }
       ],
     }
   },
@@ -51,17 +51,12 @@ export default {
 
 
   computed: {
-  
-    subjectsFiltres: function()
+    subjectsFiltered: function()
     {
        let self = this;
-       let datestriees = self.datestriees;
-        let valeur= '';
-        let dateistrue = false;
-
-       return this.subjects.filter(function(subject) {
-          // Filter on title and author
-       
+       let subjects = this.subjects.filter(function(subject) {
+        
+        // Filter on title and author
         let title = self.normlizeText(subject.title);
         let author = self.normlizeText(subject.author);
         let searchTxt = self.normlizeText(self.searchTxt);
@@ -96,8 +91,10 @@ export default {
         return filter1 && filter2 ;
       
       });
-    },
 
+      // Return sorted subject
+      return subjects.sort(this.sortBy);
+    }
   },
   methods: {
 
@@ -133,28 +130,30 @@ return Date.parse(x)
       // Return sorted array
       return themes.sort();
     },
-
-    getandsortDates: function() {
-      
-      let dates = [];
-      let datesdates = []
-      let self = this;
-      //gets all dates and put them in a [ ]
-       this.subjects.forEach(function(subject) {
-      let dateinms= self.tranformDate(subject.date);
-       dates.push(dateinms);
-       })
-       //sort 'em all
-        let datesfiltrees = self.sortdates(dates);
-   
-// return them as bootifull 
-        datesfiltrees.forEach( function(el) {
-          datesdates.push(new Date(el))
-           
-        })
-        console.log(datesdates)
-        return datesdates;  
-
+    sortBy(a, b) {
+      // Sort by date (desc)
+      if(this.sortKey == 'date') {
+        a = new Date(a.date);
+        b = new Date(b.date);
+        return b-a;
+      }
+      // Sort by title
+      else {
+        if (a.title < b.title) {
+          return -1;
+        }
+        if (a.title > b.title) {
+          return 1;
+        }
+        return 0;
+      }
+    }
+  },
+  filters: {
+    formatDate: function(value) {
+      if (value) {
+        return moment(String(value)).format('DD/MM/YY');
+      }
     }
   }
 }
