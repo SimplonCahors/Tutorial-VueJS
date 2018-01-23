@@ -32,12 +32,12 @@
         <div class="input">
             <textarea placeholder="Ajouter vos documents et sources"></textarea>
         </div>
-        <input type="submit" value="ajouter veille" v-on:click="submit">
+        <input type="submit" value="ajouter veille" v-on:click="addVeille">
     </fieldset>
     </form>
 </template>
 <script>
-import auteurs from '../author.json';
+
 import themes from '../theme.json';
 import Firebase from 'firebase'
 
@@ -53,7 +53,13 @@ let config = {
 let app = Firebase.initializeApp(config)
 let db = app.database()
 
-let authorRef = db.ref('test-940d0')
+let authorRef = db.ref('test-940d0');
+var starCountRef = app.database().ref('authors');
+starCountRef.on('value', function(snapshot) {
+  console.log(snapshot.val());
+});
+// console.log(app.database().ref('authors/0').firstname);
+// // console.log(app.database().ref('authors'));
 
 export default {
     name:'ajouter',
@@ -64,34 +70,38 @@ export default {
         return{
             auteurs:authorRef,
             themes:themes,
-            test:[]
+            test:[],
+            newAuteur: {
+          id: '',
+          firstname: '',
+          lastname: ''
         }
-    },
-    created: function(){
-        for(var i = 0; i < auteurs.length; i++)
-        {
-            this.test.push( auteurs[i].firstname)
         }
-
     },
     methods: 
     {
-    verif: function(event){
-        let NewTheme = document.getElementById("new_theme");  
+        addVeille: function (event) {
+        this.newAuteur.id = '223';
+        this.newAuteur.firstname = 'benjamin';
+        this.newAuteur.lastname = 'Mellet';
+        db.ref('authors/4').set(this.newAuteur);
+      },
+        verif: function(event){
+            let NewTheme = document.getElementById("new_theme");  
 
-        if(event.target.value == "autre")
-        {
-            NewTheme.style.display = "block";
+            if(event.target.value == "autre")
+            {
+                NewTheme.style.display = "block";
+            }
+            else
+            {
+                NewTheme.style.display = "none";
+            }
+        },
+        submit: function(event){
+            event.preventDefault();
+            let newTheme = document.getElementById("new_theme").value;
         }
-        else
-        {
-            NewTheme.style.display = "none";
-        }
-    },
-    submit: function(event){
-        event.preventDefault();
-        let newTheme = document.getElementById("new_theme").value;
-    }
 
     }
 }
