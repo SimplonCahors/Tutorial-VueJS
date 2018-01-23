@@ -9,6 +9,7 @@
     <label for="auteur"> Auteur</label>
     <select> 
    <option v-for="stuff in auteurs">{{stuff.firstname}} {{stuff.lasname.substring(0,1)}}.</option>
+
      </select> 
   </div>
                     
@@ -25,12 +26,10 @@
                
  <div>
   <label for="Thématiques"> Thématiques</label>
-  <select v-on:change='doIt'> 
-    <option> css</option>
-    <option > js</option>
-    <option > vuejs</option>
-      <option > Autre</option>
- </select> 
+   <select v-on:change="doIt" > 
+    <option v-for="stuff in themes">{{stuff}}.</option>
+      <option> Autre </option>
+     </select> 
   </div>   
 
    <div id="toAppear">
@@ -51,13 +50,16 @@
 <script>
 
 import auteurs from './authors.json'
+import themes from './themes.json'
+import axios from '../../node_nodules/axios'
 
 export default {
   name: 'Ajouter',
-  data () {
+  data () { 
     return {
       
       auteurs:auteurs,
+      themes:themes
    
     }
   },
@@ -67,11 +69,9 @@ export default {
      doIt: function (event) {
 
         
-        // console.log(this.$el[4].options[this.$el[4].selectedIndex].value);
-       
+  
        if (event.target.value == "Autre") document.querySelector('#toAppear').style.display="block";
-        // if (this.$el[4].options[this.$el[4].selectedIndex].value == "Autre") document.querySelector('#toAppear').style.display="block";
-       
+   
 
        else  document.querySelector('#toAppear').style.display="none";
    
