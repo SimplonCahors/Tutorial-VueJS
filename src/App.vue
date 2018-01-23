@@ -9,6 +9,7 @@
 <script>
 /* eslint-disable */
 import VeilleListe from './components/VeilleListe'
+import CreerVeille from './components/comp'
 
 export default {
   name: 'App',
@@ -16,6 +17,7 @@ export default {
     VeilleListe
   }
 }
+
 </script>
 
 <style>
