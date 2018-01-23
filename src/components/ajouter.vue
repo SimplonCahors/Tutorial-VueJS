@@ -55,11 +55,7 @@ let db = app.database()
 
 let authorRef = db.ref('authors');
 var starCountRef = db.ref('veille');
-starCountRef.on('value', function(snapshot) {
-  console.log(Object.keys(snapshot.val()));
-});
-// console.log(app.database().ref('authors/0').firstname);
-// // console.log(app.database().ref('authors'));
+
 
 export default {
     name:'ajouter',
@@ -71,6 +67,8 @@ export default {
             auteurs:authorRef,
             themes:themes,
             test:[],
+            lastKey:0,
+
     
                  newveille: {
           titre: '',
@@ -81,6 +79,18 @@ export default {
         }
         }
     },
+    created : function(){
+        var self = this
+       
+        starCountRef.on('value', function(snapshot) {
+
+     var veillesKeys = Object.keys(snapshot.val());
+    self.lastKey = veillesKeys.splice(veillesKeys.length-1, veillesKeys.length)
+     console.log('exe')
+
+});
+
+    },
     methods: 
     {
         addVeille: function (event) {
@@ -90,7 +100,7 @@ export default {
           this.newveille.theme = document.getElementById('theme').value;
             this.newveille.infos = 'Demanez';
 
-        db.ref('veille/2').set(this.newveille);
+        db.ref('veille/'+(parseInt(this.lastKey)+1)).set(this.newveille);
         },
     
           
