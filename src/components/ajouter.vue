@@ -8,15 +8,14 @@
   <div>
     <label for="auteur"> Auteur</label>
     <select> 
-      <option> aze</option>
-      <option> rty</option>
-      <option> cvfg</option>
+   <option v-for="stuff in auteurs">{{stuff.firstname}} {{stuff.lasname.substring(0,1)}}.</option>
      </select> 
   </div>
                     
    <div>
        <label for="date"> Date</label>
-       <input type="date" id="date">     
+       <input type="date" id="date"> 
+    
   </div>
        
   <div>
@@ -26,11 +25,11 @@
                
  <div>
   <label for="Thématiques"> Thématiques</label>
-  <select> 
-    <option v-on:click="dontIt" > css</option>
-    <option v-on:click="dontIt" > js</option>
-    <option v-on:click="dontIt" > vuejs</option>
-      <option v-on:click="doIt"> Autre</option>
+  <select v-on:change='doIt'> 
+    <option> css</option>
+    <option > js</option>
+    <option > vuejs</option>
+      <option > Autre</option>
  </select> 
   </div>   
 
@@ -38,11 +37,10 @@
      <label for="nouvellethematique"> Nouvelle thématique</label>
       <input type="text" id="nouvellethematique" placeholder="Nouvelle Thématique"> 
   </div>
-               
+   
    <div>
   <input type ='submit' value ='Ajouter'>  
    </div>
-   <p id="ok" >aaaaaaaaaa</p>
 
 
    </form>
@@ -51,30 +49,35 @@
 
 
 <script>
+
+import auteurs from './authors.json'
+
 export default {
   name: 'Ajouter',
   data () {
     return {
       
+      auteurs:auteurs,
+   
     }
   },
-   created: function () {
+   
   
-
-   },
-    
-
-
- 
    methods: {
-     doIt: function () {
-    
-      document.querySelector('#toAppear').style.display="block";
+     doIt: function (event) {
+
+        
+        // console.log(this.$el[4].options[this.$el[4].selectedIndex].value);
+       
+       if (event.target.value == "Autre") document.querySelector('#toAppear').style.display="block";
+        // if (this.$el[4].options[this.$el[4].selectedIndex].value == "Autre") document.querySelector('#toAppear').style.display="block";
+       
+
+       else  document.querySelector('#toAppear').style.display="none";
+   
+     
    },
-      dontIt: function () {
     
-      document.querySelector('#toAppear').style.display="none";
-   }
 }
 }
 
