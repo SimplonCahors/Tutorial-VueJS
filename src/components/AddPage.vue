@@ -21,9 +21,9 @@
         <label for="theme"></label>
         <select id="theme" v-on:change="verif">
             <option>Thematique</option>
-            <option>JS</option>
-            <option>CSS</option>
-            <option>HTML</option>
+            <option v-for="items in themes">
+                    {{items}}  
+                </option>
             <option id="ok">autre</option>
         </select>
         <label for="new_theme"></label>
@@ -32,18 +32,20 @@
         <div class="input">
             <textarea placeholder="Ajouter vos documents et sources"></textarea>
         </div>
-        <input type="submit" value="ajouter veille">
+        <input type="submit" value="ajouter veille" v-on:click="submit">
     </fieldset>
     </form>
 </template>
 
 <script>
 import auteurs from '../author.json';
+import themes from '../theme.json';
 export default {
     name:'ajouter',
     data(){
         return{
             auteurs:auteurs,
+            themes:themes
         }
     },
     methods: 
@@ -59,6 +61,10 @@ export default {
         {
             NewTheme.style.display = "none";
         }
+    },
+    submit: function(event){
+        event.preventDefault();
+        let newTheme = document.getElementById("new_theme").value;
     }
 
     }
