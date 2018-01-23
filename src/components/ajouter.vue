@@ -54,9 +54,9 @@ let app = Firebase.initializeApp(config)
 let db = app.database()
 
 let authorRef = db.ref('authors');
-var starCountRef = db.ref('authors');
+var starCountRef = db.ref('veille');
 starCountRef.on('value', function(snapshot) {
-  console.log(snapshot.val());
+  console.log(Object.keys(snapshot.val()));
 });
 // console.log(app.database().ref('authors/0').firstname);
 // // console.log(app.database().ref('authors'));
@@ -73,8 +73,8 @@ export default {
             test:[],
     
                  newveille: {
-          id: '',
-          authors: [],
+          titre: '',
+          authorsS: [],
           date: '',
           theme:'',
           infos:''
@@ -84,13 +84,13 @@ export default {
     methods: 
     {
         addVeille: function (event) {
-        this.newveille.id =document.getElementById('titre').value;
-        this.newveille.authors = ['Elisa','benjamin'];
-        this.newveille.date = 'Demanez';
-          this.newveille.theme = 'Demanez';
+        this.newveille.titre =document.getElementById('titre').value;
+        this.newveille.authorsS = ['Elisa',document.getElementById('auteurs').value];
+        this.newveille.date = document.getElementById('date').value;
+          this.newveille.theme = document.getElementById('theme').value;
             this.newveille.infos = 'Demanez';
 
-        db.ref('veille/0').set(this.newveille);
+        db.ref('veille/2').set(this.newveille);
         },
     
           
