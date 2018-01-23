@@ -1,5 +1,86 @@
 <template>
-<v-app>
-  <p>ok</p>  
-</v-app>
+    <form>
+    <fieldset>
+        <div class="input">
+            <label for="titre"></label>
+            <input id="titre" placeholder="titre" type="text">
+        </div>
+        <div class="input">
+            <label for="auteurs"></label>
+            <select id="auteurs">
+                <option v-for="items in auteurs">
+                    {{items.firstname}} &nbsp;{{items.lastname[0]}}  
+                </option>
+            </select>
+        </div>
+        <div class="input">
+            <label for="date"></label>
+            <input id="date" type="date">
+        </div>
+        <div class="input">
+        <label for="theme"></label>
+        <select id="theme" v-on:change="verif">
+            <option>Thematique</option>
+            <option>JS</option>
+            <option>CSS</option>
+            <option>HTML</option>
+            <option id="ok">autre</option>
+        </select>
+        <label for="new_theme"></label>
+        <input id="new_theme" type="text" placeholder="nouvelle thématique">
+        </div>
+        <div class="input">
+            <textarea placeholder="Ajouter vos documents et sources"></textarea>
+        </div>
+        <input type="submit" value="ajouter veille">
+    </fieldset>
+    </form>
 </template>
+
+<script>
+import auteurs from '../author.json';
+export default {
+    name:'ajouter',
+    data(){
+        return{
+            auteurs:auteurs,
+        }
+    },
+    methods: 
+    {
+    verif: function(event){
+        let NewTheme = document.getElementById("new_theme");  
+
+        if(event.target.value == "autre")
+        {
+            NewTheme.style.display = "block";
+        }
+        else
+        {
+            NewTheme.style.display = "none";
+        }
+    }
+
+    }
+}
+</script>
+
+
+
+
+<style type="sass">
+
+.input{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 4vh 0;
+}
+.input textarea{
+    width: 30%;
+    height: 30vh;
+}
+#new_theme{
+    display: none;
+}
+</style>
