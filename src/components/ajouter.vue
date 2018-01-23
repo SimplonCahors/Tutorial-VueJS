@@ -1,118 +1,118 @@
 <template>
-<form class="form">
-  <div >
-     <label for="titre"> Titre</label>
-      <input type="text" id="titre" placeholder="Entrez le titre de la veille"> 
-  </div>
+    <form>
+    <fieldset>
+        <div class="input">
+            <label for="titre"></label>
+            <input id="titre" placeholder="titre" type="text">
+        </div>
+        <div class="input">
+            <label for="auteurs"></label>
+            <select id="auteurs">
+                <option v-for=" item in test">
+                    {{item}}
+                </option>
+            </select>
+        </div>
+        <div class="input">
+            <label for="date"></label>
+            <input id="date" type="date">
+        </div>
+        <div class="input">
+        <label for="theme"></label>
+        <select id="theme" v-on:change="verif">
+            <option>Thematique</option>
+            <option v-for="items in themes">
+                    {{items}}  
+                </option>
+            <option id="ok">autre</option>
+        </select>
+        <label for="new_theme"></label>
+        <input id="new_theme" type="text" placeholder="nouvelle thématique">
+        </div>
+        <div class="input">
+            <textarea placeholder="Ajouter vos documents et sources"></textarea>
+        </div>
+        <input type="submit" value="ajouter veille" v-on:click="submit">
+    </fieldset>
+    </form>
+</template>
+ <script>
+// import auteurs from './authors.json';
+import themes from './themes.json';
+import Firebase from 'firebase'
 
-  <div>
-    <label for="auteur"> Auteur</label>
-    <select> 
-   <option v-for="stuff in auteurs">{{stuff.firstname}} {{stuff.lasname.substring(0,1)}}.</option>
+let config = {
+    apiKey: "AIzaSyDKLjfU8Xw8_qudrEl78NIDSNnqoMX2X_I",
+    authDomain: "test-940d0.firebaseapp.com",
+    databaseURL: "https://test-940d0.firebaseio.com",
+     projectId: "test-940d0",
+    storageBucket: "test-940d0.appspot.com",
+    messagingSenderId: "646526938890"
+  };
+  
+let app = Firebase.initializeApp(config)
+let db = app.database()
 
-     </select> 
-  </div>
-                    
-   <div>
-       <label for="date"> Date</label>
-       <input type="date" id="date"> 
-    
-  </div>
-       
-  <div>
-    <label for="yourmessage"> Message</label>
-    <textarea id="yourmessage"></textarea>
-  </div>
-               
- <div>
-  <label for="Thématiques"> Thématiques</label>
-   <select v-on:change="doIt" > 
-    <option v-for="stuff in themes">{{stuff}}.</option>
-      <option> Autre </option>
-     </select> 
-  </div>   
-
-   <div id="toAppear">
-     <label for="nouvellethematique"> Nouvelle thématique</label>
-      <input type="text" id="nouvellethematique" placeholder="Nouvelle Thématique"> 
-  </div>
-   
-   <div>
-  <input type ='submit' value ='Ajouter'>  
-   </div>
-
-
-   </form>
-    </template>
-
-
-
-<script>
-
-import auteurs from './authors.json'
-import themes from './themes.json'
-import axios from '../../node_nodules/axios'
+let authorRef = db.ref('test-940d0')
 
 export default {
-  name: 'Ajouter',
-  data () { 
-    return {
-      
-      auteurs:auteurs,
-      themes:themes
-   
+    name:'ajouter',
+    firebase: {
+       authors: authorRef
+    },
+    data(){
+        return{
+            auteursA:authorRef,
+            themes:themes,
+            test:[]
+        }
+    },
+    created: function(){
+        for(var i = 0; i < auteursA.length; i++)
+        {
+            this.test.push( auteursA[i].firstname)
+        }
+
+    },
+    methods: 
+    {
+    verif: function(event){
+        let NewTheme = document.getElementById("new_theme");  
+
+        if(event.target.value == "autre")
+        {
+            NewTheme.style.display = "block";
+        }
+        else
+        {
+            NewTheme.style.display = "none";
+        }
+    },
+    submit: function(event){
+        event.preventDefault();
+        let newTheme = document.getElementById("new_theme").value;
     }
-  },
-   
-  
-   methods: {
-     doIt: function (event) {
 
-        
-  
-       if (event.target.value == "Autre") document.querySelector('#toAppear').style.display="block";
-   
-
-       else  document.querySelector('#toAppear').style.display="none";
-   
-     
-   },
-    
+    }
 }
-}
-
 </script>
 
 
 
 
+<style type="sass">
 
-
-
-
-<style scoped>
-
-
-form > div {
-  margin: 5px;
-  border: 5px;
-  display: flex;
-  flex-direction: column;
-  align-self: center;
-  justify-content: center;
-  padding: 5px 30%;
-  font-family: 'Open Sans', sans-serif; 
-
-
+.input{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 4vh 0;
 }
-
-form > div > :nth-child(2), form > div > input[type=submit]  {
-  width: 50%;
+.input textarea{
+    width: 30%;
+    height: 30vh;
 }
-
-form > div:nth-child(6) {
-  display: none;
+#new_theme{
+    display: none;
 }
-
-
 </style>
