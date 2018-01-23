@@ -8,8 +8,8 @@
         <div class="input">
             <label for="auteurs"></label>
             <select id="auteurs">
-                <option v-for=" item in test">
-                    {{item}}
+                <option v-for=" item in authors">
+                    {{item.firstname}}
                 </option>
             </select>
         </div>
@@ -32,12 +32,12 @@
         <div class="input">
             <textarea placeholder="Ajouter vos documents et sources"></textarea>
         </div>
-        <input type="submit" value="ajouter veille" v-on:click="submit">
+        <input type="submit" value="ajouter veille" v-on:click="addVeille">
     </fieldset>
     </form>
 </template>
- <script>
-// import auteurs from './authors.json';
+<script>
+
 import themes from './themes.json';
 import Firebase from 'firebase'
 
@@ -53,7 +53,13 @@ let config = {
 let app = Firebase.initializeApp(config)
 let db = app.database()
 
-let authorRef = db.ref('test-940d0')
+let authorRef = db.ref('authors');
+var starCountRef = db.ref('authors');
+starCountRef.on('value', function(snapshot) {
+  console.log(snapshot.val());
+});
+// console.log(app.database().ref('authors/0').firstname);
+// // console.log(app.database().ref('authors'));
 
 export default {
     name:'ajouter',
@@ -62,39 +68,51 @@ export default {
     },
     data(){
         return{
-            auteursA:authorRef,
+            auteurs:authorRef,
             themes:themes,
-            test:[]
+            test:[],
+    
+                 newveille: {
+          id: '',
+          authors: [],
+          date: '',
+          theme:'',
+          infos:''
         }
-    },
-    created: function(){
-        for(var i = 0; i < auteursA.length; i++)
-        {
-            this.test.push( auteursA[i].firstname)
         }
-
     },
     methods: 
     {
-    verif: function(event){
-        let NewTheme = document.getElementById("new_theme");  
+        addVeille: function (event) {
+        this.newveille.id =document.getElementById('titre').value;
+        this.newveille.authors = ['Elisa','benjamin'];
+        this.newveille.date = 'Demanez';
+          this.newveille.theme = 'Demanez';
+            this.newveille.infos = 'Demanez';
 
-        if(event.target.value == "autre")
-        {
-            NewTheme.style.display = "block";
+        db.ref('veille/0').set(this.newveille);
+        },
+    
+          
+        verif: function(event){
+            let NewTheme = document.getElementById("new_theme");  
+
+            if(event.target.value == "autre")
+            {
+                NewTheme.style.display = "block";
+            }
+            else
+            {
+                NewTheme.style.display = "none";
+            }
+        },
+        submit: function(event){
+            event.preventDefault();
+            let newTheme = document.getElementById("new_theme").value;
         }
-        else
-        {
-            NewTheme.style.display = "none";
-        }
-    },
-    submit: function(event){
-        event.preventDefault();
-        let newTheme = document.getElementById("new_theme").value;
+        },
     }
 
-    }
-}
 </script>
 
 
