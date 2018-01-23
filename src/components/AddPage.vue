@@ -8,8 +8,8 @@
         <div class="input">
             <label for="auteurs"></label>
             <select id="auteurs">
-                <option v-for="items in auteurs">
-                    {{items.firstname}} &nbsp;{{items.lastname[0]}}  
+                <option v-for=" item in test">
+                    {{item}}
                 </option>
             </select>
         </div>
@@ -36,17 +36,43 @@
     </fieldset>
     </form>
 </template>
-
 <script>
 import auteurs from '../author.json';
 import themes from '../theme.json';
+import Firebase from 'firebase'
+
+let config = {
+    apiKey: "AIzaSyDKLjfU8Xw8_qudrEl78NIDSNnqoMX2X_I",
+    authDomain: "test-940d0.firebaseapp.com",
+    databaseURL: "https://test-940d0.firebaseio.com",
+     projectId: "test-940d0",
+    storageBucket: "test-940d0.appspot.com",
+    messagingSenderId: "646526938890"
+  };
+  
+let app = Firebase.initializeApp(config)
+let db = app.database()
+
+let authorRef = db.ref('test-940d0')
+
 export default {
     name:'ajouter',
+    firebase: {
+       authors: authorRef
+    },
     data(){
         return{
-            auteurs:auteurs,
-            themes:themes
+            auteurs:authorRef,
+            themes:themes,
+            test:[]
         }
+    },
+    created: function(){
+        for(var i = 0; i < auteurs.length; i++)
+        {
+            this.test.push( auteurs[i].firstname)
+        }
+
     },
     methods: 
     {

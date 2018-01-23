@@ -4,9 +4,11 @@ import Vue from 'vue'
 import App from './App'
 import Add from './components/AddPage'
 import VeilleListe from './components/VeilleListe'
+import VueFire from 'vuefire'
 // import Vuetify from 'vuetify'
 // import('../node_modules/vuetify/dist/vuetify.min.css')
  
+Vue.use(VueFire)
 // Vue.use(Vuetify)
 Vue.config.productionTip = false
 const NotFound = { template: '<p>Page not found</p>' };
