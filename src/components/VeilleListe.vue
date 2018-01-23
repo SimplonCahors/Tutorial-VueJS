@@ -1,27 +1,51 @@
-<template>
+<template >
+<v-app>
   <div id="liste">
     <div class="filters">
-      <input
-        type="text"
-        placeholder="Rechercher"
-        v-model="searchTxt" />
-      <select v-model="searchTheme">
-        <option value="all">Thématique</option>
-        <option v-for="(theme, index) in themes" v-bind:value="theme">{{ theme }}</option>
-      </select>
-      <select v-model="sortKey">
+      <v-layout row wrap class="main">
+        <v-flex xs7>
+    <v-text-field
+      label="Recherche"
+      v-model="searchTxt"
+    ></v-text-field>
+      </v-flex>
+        <v-flex xs5>
+            <v-select
+              v-bind:items="themes"
+              v-model="searchTheme"
+              label="Select"
+              single-line
+              bottom
+              hint="Selectionner le theme."
+              persistent-hint
+            ></v-select>
+          </v-flex>
+       <select v-model="sortKey">
         <option value="title">Titre</option>
         <option value="date">Date</option>
       </select>
+    </v-layout>
     </div>
-    <ul>
-      <li v-for="(subject, index) in subjectsFiltered">
-        {{ subject.title }} <small>par {{ subject.author }}</small><small v-if="subject.date"> - {{ subject.date | formatDate }}</small>
-      </li>
-    </ul>
+    <div class="subjects">
+      <v-list three-line>
+          <template v-for="(subject,index) in subjectsFiltered">
+            <v-subheader v-if="subject.header" v-text="subject.header"></v-subheader>
+            <v-divider v-else-if="subject.divider" v-bind:inset="subject.inset"></v-divider>
+            <v-list-tile avatar v-else v-bind:key="subject.title" @click="">
+              <v-list-tile-content>
+                <v-list-tile-title v-html="subject.title"></v-list-tile-title>
+                <v-list-tile-sub-title v-html="subject.author"></v-list-tile-sub-title>             
+              </v-list-tile-content>
+               <v-list-tile-action v-if="subject.date">
+                 <small>{{ subject.date | formatDate }}</small>
+               </v-list-tile-action>
+            </v-list-tile>
+          </template>
+        </v-list>
+    </div>
   </div>
+    </v-app>
 </template>
-
 <script>
 /* eslint-disable */
 import moment from 'moment';
@@ -31,7 +55,7 @@ export default {
   data () {
     return {
       searchTxt: '',
-      searchTheme: 'all',
+      searchTheme: 'Thématique',
       themes: [],
       sortKey: 'title',
       subjects: [
@@ -128,7 +152,9 @@ return Date.parse(x)
           return index === self.indexOf(elem);
       });
       // Return sorted array
-      return themes.sort();
+     var themesSorted = themes.sort();
+     themesSorted.splice(0,0,"Thématique");
+     return themesSorted;
     },
     sortBy(a, b) {
       // Sort by date (desc)
@@ -158,3 +184,25 @@ return Date.parse(x)
   }
 }
 </script>
+<style scoped>
+ul{
+  margin: auto;
+  width: 100%;
+  align-items: center;
+  justify-content: center; 
+  text-align: center;
+
+  
+}
+.main
+{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+
+
+
+</style>
+
