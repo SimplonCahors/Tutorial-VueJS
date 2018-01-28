@@ -7,10 +7,8 @@
       <br>
       <label>Author:</label>
       <br>
-      <select id="one">
-<option value="'Raphaël">'Raphaël</option>
-<option value="Victoria">Victoria</option>
-<option value="Nicolas">Nicolas</option>
+      <select id="one" name="author">
+        <option v-for="one in authors">{{one.firstname}} {{one.lastname}}</option>
 </select>
       <br> Date:
       <br>
@@ -38,27 +36,36 @@
 </template>
 
 <script>
-export default{
-  methods:{
-    hide: function (event) {
-      let NewTheme = document.getElementById("new_theme");
+import authors from '../authors.json';
 
-      if(event.target.value == "Other")
-      {
-        NewTheme.style.display ="block";
+export default {
+  data: function() {
+    return {
+      authors: authors,
+    };
+  },
+
+  methods: {
+    hide: function(event) {
+      let NewTheme = document.getElementById('new_theme');
+
+      if (event.target.value == 'Other') {
+        NewTheme.style.display = 'block';
+      } else {
+        NewTheme.style.display = 'none';
       }
-      else{
-        NewTheme.style.display ="none";
-      }
-
-    }
-  }
-
-}
+    },
+  },
+};
 </script>
 
+import 
+
 <style type="scss">
-  #new_theme {
-    display: none;
-  }
+#new_theme {
+  display: none;
+}
+#div1 {
+  background-color: violet;
+}
 </style>
