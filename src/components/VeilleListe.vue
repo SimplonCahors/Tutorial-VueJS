@@ -7,7 +7,7 @@
         v-model="searchTxt" />
       <select v-model="searchTheme">
         <option value="all">Thématique</option>
-        <option v-for="(theme, index) in themes" v-bind:value="theme">{{ theme }}</option>
+        <option v-for="theme in themes" v-bind:key="theme">{{ theme }}</option>
       </select>
       <select v-model="sortKey">
         <option value="title">Titre</option>
@@ -15,7 +15,7 @@
       </select>
     </div>
     <ul>
-      <li v-for="(subject, index) in subjectsFiltered">
+      <li v-for="subject in subjectsFiltered" v-bind:key="subject">
         {{ subject.title }} <small>par {{ subject.author }}</small><small v-if="subject.date"> - {{ subject.date | formatDate }}</small>
       </li>
     </ul>
