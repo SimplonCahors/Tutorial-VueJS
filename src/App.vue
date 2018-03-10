@@ -1,10 +1,19 @@
 <template>
   <div id="app">
+    
+    <v-app>
+      <div id="e3" style="max-width: 400px; margin: auto;" class="grey lighten-3">
     <img src="./assets/logo.png">
     <h2>Liste des veilles</h2>
     <VeilleListe/>
+    </div>
+    </v-app>
   </div>
 </template>
+
+
+...
+
 
 <script>
 /* eslint-disable */
@@ -19,9 +28,7 @@ export default {
 </script>
 
 <style>
-@import '~vuetify/src/stylus/main'
 #app {
-  
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
