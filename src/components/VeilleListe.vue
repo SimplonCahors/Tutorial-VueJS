@@ -1,118 +1,156 @@
 <template>
-  <div id="liste">
-    <div class="filters">
-      <input
-        type="text"
-        placeholder="Rechercher"
-        v-model="searchTxt" />
-      <select v-model="searchTheme">
-        <option value="all">Thématique</option>
-        <option v-for="theme in themes" v-bind:key="theme">{{ theme }}</option>
-      </select>
-      <select v-model="sortKey">
-        <option value="title">Titre</option>
-        <option value="date">Date</option>
-      </select>
-    </div>
-    <ul>
-      <li v-for="subject in subjectsFiltered" v-bind:key="subject">
-        {{ subject.title }} <small>par {{ subject.author }}</small><small v-if="subject.date"> - {{ subject.date | formatDate }}</small>
-      </li>
-    </ul>
+  <div id="VeilleListe">
+    <v-container grid>
+
+      <!-- Filter options -->
+      <v-layout row wrap>
+        <v-flex xs6>
+          <v-select light :items="themes" item-value="" v-model="searchTheme" label="Thématiques" multi-line></v-select>
+        </v-flex>
+        <v-flex xs6>
+          <v-text-field label="Rechercher..." append-icon="search"  v-model="searchTxt"></v-text-field>
+        </v-flex>
+      </v-layout>
+
+      <!-- List -->
+      <v-layout row wrap style="overflow:auto;">
+            <v-container wrap>
+              <v-list two-line>
+                <template v-for="(subject, index) in subjectsFiltered">
+                  <v-list-tile-content :key="subject">
+                    <v-list-tile-title><strong>{{ subject.title }}</strong> par {{ subject.author }}.</v-list-tile-title>
+                    <v-list-tile-sub-title v-if="subject.date"> {{ subject.date | formatDate }}</v-list-tile-sub-title>
+                  </v-list-tile-content>
+                  <v-divider v-if="index + 1 < subjectsFiltered.length" :key="`divider-${index}`"></v-divider>
+                </template>
+              </v-list>
+            </v-container>
+      </v-layout>
+
+      <!-- Sort options-->
+      <v-layout row wrap>
+        <v-flex xs12 >
+             <v-radio-group row v-model="sortKey">
+            <v-radio v-for="value in ['titre', 'date']" :key="value" :label="`Tri par ${value}`" :value="value"></v-radio>
+          </v-radio-group>
+          </v-flex>
+      </v-layout>
+
+    </v-container>
   </div>
 </template>
 
+
 <script>
-/* eslint-disable */
-import moment from 'moment';
-
-export default {
-  name: 'VeilleListe',
-  data () {
-    return {
-      searchTxt: '',
-      searchTheme: 'all',
-      themes: [],
-      sortKey: 'title',
-      subjects: [
-        { title: 'Tout savoir sur VueJS', author: 'Raphael', themes: ['VueJS', 'JS'], date: '2017-11-23T18:25:43.511Z' },
-        { title: 'Angular VS ReactJS', author: 'Henry', themes: ['VueJS', 'Angular', 'JS'], date: '2018-01-10T18:25:43.511Z' },
-        { title: 'Apprendre et étudier le JS', author: 'Victoria', themes: ['VueJS', 'JS'], date: '2017-12-12T18:25:43.511Z' },
-        { title: 'Apprendre le CSS', author: 'Nicolas', themes: ['CSS'], date: '' }
-      ],
-    }
-  },
-  created: function () {
-    this.themes = this.getThemes();
-  },
-  computed: {
-    subjectsFiltered: function()
-    {
-       let self = this;
-       let subjects = this.subjects.filter(function(subject) {
-        
-        // Filter on title and author
-        let title = self.normlizeText(subject.title);
-        let author = self.normlizeText(subject.author);
-        let searchTxt = self.normlizeText(self.searchTxt);
-        let filter1 = title.indexOf(searchTxt) >= 0 || author.indexOf(searchTxt) >= 0;
-        
-        // Filter on theme
-        let filter2 = subject.themes.indexOf(self.searchTheme) >= 0 || self.searchTheme == 'all';
-        
-        return filter1 && filter2;
-      });
-
-      // Return sorted subject
-      return subjects.sort(this.sortBy);
-    }
-  },
-  methods: {
-    normlizeText: function(str) {
-      // Change to lower case and remove first & last spaces
-      str = str.toLowerCase().trim();
-      // Remove accents
-      return str.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+  /* eslint-disable */
+  import moment from "moment";
+  
+  export default {
+    name: "VeilleListe",
+    data() {
+      return {
+        searchTxt: "",
+        searchTheme: "Afficher tout",
+        themes: [],
+        sortKey: "title",
+        subjects: [{
+            title: "Tout savoir sur VueJS",
+            author: "Raphael",
+            themes: ["VueJS", "JS"],
+            date: "2017-11-23T18:25:43.511Z"
+          },
+          {
+            title: "Angular VS ReactJS",
+            author: "Henry",
+            themes: ["VueJS", "Angular", "JS"],
+            date: "2018-01-10T18:25:43.511Z"
+          },
+          {
+            title: "Apprendre et étudier le JS",
+            author: "Victoria",
+            themes: ["VueJS", "JS"],
+            date: "2017-12-12T18:25:43.511Z"
+          },
+          {
+            title: "Apprendre le CSS",
+            author: "Nicolas",
+            themes: ["CSS"],
+            date: ""
+          }
+        ]
+      };
     },
-    getThemes: function() {
-      let themes = [];
-      // Merge all themes
-      this.subjects.forEach(function(subject) {
-        Array.prototype.push.apply(themes, subject.themes);
-      
-      });
-      // Remove duplicates
-      themes = themes.filter(function(elem, index, self) {
+    created: function() {
+      this.themes = this.getThemes();
+      this.themes.unshift("Afficher tout");
+    },
+    computed: {
+      subjectsFiltered: function() {
+        let self = this;
+        let subjects = this.subjects.filter(function(subject,) {
+          // Filter on title and author
+          let title = self.normlizeText(subject.title);
+          let author = self.normlizeText(subject.author);
+          let searchTxt = self.normlizeText(self.searchTxt);
+          let filter1 =
+            title.indexOf(searchTxt) >= 0 || author.indexOf(searchTxt) >= 0;
+  
+          // Filter on theme
+          let filter2 =
+            subject.themes.indexOf(self.searchTheme) >= 0 ||
+            self.searchTheme == "Afficher tout";
+  
+          return filter1 && filter2;
+        });
+  
+        // Return sorted subject
+        return subjects.sort(this.sortBy);
+      }
+    },
+    methods: {
+      normlizeText: function(str) {
+        // Change to lower case and remove first & last spaces
+        str = str.toLowerCase().trim();
+        // Remove accents
+        return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      },
+      getThemes: function() {
+        let themes = [];
+        // Merge all themes
+        this.subjects.forEach(function(subject) {
+          Array.prototype.push.apply(themes, subject.themes);
+        });
+        // Remove duplicates
+        themes = themes.filter(function(elem, index, self) {
           return index === self.indexOf(elem);
-      });
-      // Return sorted array
-      return themes.sort();
+        });
+        // Return sorted array
+        return themes.sort();
+      },
+      sortBy(a, b) {
+        // Sort by date (desc)
+        if (this.sortKey == "date") {
+          a = new Date(a.date);
+          b = new Date(b.date);
+          return b - a;
+        } else {
+          // Sort by title
+          if (a.title < b.title) {
+            return -1;
+          }
+          if (a.title > b.title) {
+            return 1;
+          }
+          return 0;
+        }
+      }
     },
-    sortBy(a, b) {
-      // Sort by date (desc)
-      if(this.sortKey == 'date') {
-        a = new Date(a.date);
-        b = new Date(b.date);
-        return b-a;
-      }
-      // Sort by title
-      else {
-        if (a.title < b.title) {
-          return -1;
+    filters: {
+      formatDate: function(value) {
+        if (value) {
+          return moment(String(value)).format("DD/MM/YY");
         }
-        if (a.title > b.title) {
-          return 1;
-        }
-        return 0;
       }
     }
-  },
-  filters: {
-    formatDate: function(value) {
-      if (value) {
-        return moment(String(value)).format('DD/MM/YY');
-      }
-    }
-  }
-}
+  };
 </script>

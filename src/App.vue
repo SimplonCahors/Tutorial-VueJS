@@ -1,39 +1,43 @@
 <template>
   <div id="app">
-    
     <v-app>
-      <div id="e3" style="max-width: 400px; margin: auto;" class="grey lighten-3">
-    <img src="./assets/logo.png">
-    <h2>Liste des veilles</h2>
-    <VeilleListe/>
-    </div>
+      <div style="width: 400px; max-width: 600px; min-height:400px; margin: auto;">
+        <v-toolbar color="primary">
+          <v-toolbar-side-icon></v-toolbar-side-icon>
+          <v-toolbar-title class="white--text">Simplon - Liste des Veilles</v-toolbar-title>
+    
+        </v-toolbar>
+        <v-card>
+          <v-container fluid style="min-height: 300px;" grid-list-lg>
+          <!--  Main component here -->
+            <VeilleListe/> 
+            <!--  -->
+          </v-container>
+        </v-card>
+      </div>
     </v-app>
   </div>
 </template>
 
-
-...
-
-
 <script>
-/* eslint-disable */
-import VeilleListe from './components/VeilleListe';
-
-export default {
-  name: 'App',
-  components: {
-    VeilleListe
-  }
-}
+  /* eslint-disable */
+  import VeilleListe from "./components/VeilleListe";
+  
+  export default {
+    name: "App",
+    components: {
+      VeilleListe
+    }
+  };
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+  #app {
+    font-family: "Avenir", Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #2c3e50;
+    margin-top: 60px;
+  }
 </style>
