@@ -1,11 +1,9 @@
 <template>
-  <div id="VeilleListe">
     <v-container grid>
-
       <!-- Filter options -->
       <v-layout row wrap>
         <v-flex xs6>
-          <v-select light :items="themes" item-value="" v-model="searchTheme" label="Thématiques" multi-line></v-select>
+          <v-select :items="themes" v-model="searchTheme" label="Thématiques" multi-line></v-select>
         </v-flex>
         <v-flex xs6>
           <v-text-field label="Rechercher..." append-icon="search"  v-model="searchTxt"></v-text-field>
@@ -21,7 +19,7 @@
                     <v-list-tile-title><strong>{{ subject.title }}</strong> par {{ subject.author }}.</v-list-tile-title>
                     <v-list-tile-sub-title v-if="subject.date"> {{ subject.date | formatDate }}</v-list-tile-sub-title>
                   </v-list-tile-content>
-                  <v-divider v-if="index + 1 < subjectsFiltered.length" :key="`divider-${index}`"></v-divider>
+                  <v-divider v-if="index + 1 < subjectsFiltered.length" :key="index"></v-divider>
                 </template>
               </v-list>
             </v-container>
@@ -37,7 +35,6 @@
       </v-layout>
 
     </v-container>
-  </div>
 </template>
 
 
