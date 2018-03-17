@@ -5,11 +5,12 @@ import App from './App'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 import colors from 'vuetify/es5/util/colors'
+
 import firebase from 'firebase'
 var VueFire = require('vuefire')
-// var firebase = require('firebase')
 
-Vue.use(VueFire)
+
+Vue.use(VueFire);
 Vue.use(Vuetify, {
   theme: {
     primary: colors.orange.darken2,
