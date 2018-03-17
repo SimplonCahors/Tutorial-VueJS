@@ -14,7 +14,7 @@
       <v-layout row wrap style="overflow:auto;">
             <v-container wrap>
               <v-list two-line>
-                <template v-for="(subject, index) in subjectsFiltered">
+                <template v-if="subject !== null" v-for="(subject, index) in subjectsFiltered">
                   <v-list-tile-content :key="subject">
                     <v-list-tile-title><strong>{{ subject.title }}</strong> par {{ subject.author }}.</v-list-tile-title>
                     <v-list-tile-sub-title v-if="subject.date"> {{ subject.date | formatDate }}</v-list-tile-sub-title>
