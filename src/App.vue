@@ -14,7 +14,8 @@
           <v-container fluid style="min-height: 300px;" grid-list-lg>
           <!--  Components here -->
           <div v-if="active < 1"><VeilleListe/> </div>
-          <div v-else><Ajouter/> </div>
+          <div v-else-if="active == 1"><Ajouter/> </div>
+          <div v-else><VeilleDetails/> </div>
           <!-- - - - - - - - - -->
           </v-container>
         </v-card>
@@ -26,12 +27,14 @@
   /* eslint-disable */
   import VeilleListe from "./components/VeilleListe";
   import Ajouter from "./components/Ajouter";
+  import VeilleDetails from "./components/VeilleDetails";
   
   export default {
     name: "App",
     components: {
       VeilleListe,
-      Ajouter
+      Ajouter,
+      VeilleDetails
     },
     data () {
       return {
