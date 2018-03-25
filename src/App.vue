@@ -2,7 +2,6 @@
 <div id="app">
     <v-app>
         <v-toolbar color="primary">
-          <v-toolbar-side-icon></v-toolbar-side-icon>
           <v-toolbar-title class="white--text">Veilles Simplon Cahors</v-toolbar-title>
     
         </v-toolbar>

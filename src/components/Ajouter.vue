@@ -87,23 +87,6 @@
     }
 </script>
 
-
-
-
 <style type="sass">
-    .input {
-        display: flex;
-        justify-content: center;
-        flex-wrap: wrap;
-        margin: 4vh 0;
-    }
-    
-    .input textarea {
-        width: 30%;
-        height: 30vh;
-    }
-    
-    #new_theme {
-        display: none;
-    }
+
 </style>

@@ -3,7 +3,7 @@
     <!-- Filter options -->
     <v-layout row wrap>
       <v-flex xs6>
-        <v-select v-model="searchTheme" :items="themes" label="Thématiques" multi-line></v-select>
+        <v-select v-model="searchTheme" :items="veillesThemes" label="Thématiques" multi-line></v-select>
       </v-flex>
       <v-flex xs6>
         <v-text-field v-model="searchTxt" label="Rechercher..." append-icon="search"></v-text-field>
@@ -43,6 +43,7 @@
   /* eslint-disable */
   import moment from "moment";
   import authors from './authors.json';
+  import themes from './themes.json';
   import {
     veillesRef
   } from './firebase';
@@ -52,8 +53,6 @@
     data() {
       return {
         auteurs: authors,
-        themes: [],
-        filteredVeilles: {},
         searchTxt: "",
         searchTheme: "Afficher tout",
         sortKey: "title",
@@ -62,11 +61,12 @@
     firebase: {
       veilles: veillesRef
     },
-    created: function() {
-      this.themes = this.getThemes();
-      this.themes.unshift("Afficher tout");
-    },
     computed: {
+      veillesThemes : function() {
+        let myThemes = this.getThemes();
+        myThemes.unshift("Afficher tout");
+        return myThemes;
+      },
       veillesFiltered: function() {
         let self = this;
         let filteredVeilles = this.veilles.filter(function(veille, ) {
@@ -97,17 +97,17 @@
         return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
       },
       getThemes: function() {
-        let themes = [];
+        let fetchThemes = [];
         // Merge all themes
         this.veilles.forEach(function(veille) {
-          Array.prototype.push.apply(themes, veille.themes);
+          Array.prototype.push.apply(fetchThemes, veille.themes);
         });
         // Remove duplicates
-        themes = themes.filter(function(elem, index, self) {
+        fetchThemes = fetchThemes.filter(function(elem, index, self) {
           return index === self.indexOf(elem);
         });
         // Return sorted array
-        return themes.sort();
+        return fetchThemes.sort();
       },
       sortBy(a, b) {
         // Sort by date (desc)
@@ -139,19 +139,5 @@
 
 
 <style type="sass">
-  .input {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin: 4vh 0;
-  }
   
-  .input textarea {
-    width: 30%;
-    height: 30vh;
-  }
-  
-  #new_theme {
-    display: none;
-  }
 </style>
