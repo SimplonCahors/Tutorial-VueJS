@@ -1,4 +1,5 @@
 <template>
+<div id="app">
     <v-app>
         <v-toolbar color="primary">
           <v-toolbar-side-icon></v-toolbar-side-icon>
@@ -21,6 +22,7 @@
         </v-card>
       <!-- </div> -->
     </v-app>
+    </div>
 </template>
 
 <script>
@@ -52,8 +54,8 @@
 
 <style>
   #app {
-    width: 400px; 
-    max-width: 400px; 
+    min-width: 500px; 
+    max-width: 500px; 
     height:400px; 
     margin:auto;
     font-family: "Avenir", Helvetica, Arial, sans-serif;
