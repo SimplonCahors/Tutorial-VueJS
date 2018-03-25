@@ -43,7 +43,6 @@
   /* eslint-disable */
   import moment from "moment";
   import authors from './authors.json';
-  import themes from './themes.json';
   import {
     veillesRef
   } from './firebase';

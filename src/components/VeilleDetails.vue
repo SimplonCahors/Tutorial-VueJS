@@ -1,24 +1,30 @@
 <template>
-    <v-container grid>
-      <!-- Filter options -->
-      <v-layout row wrap>
-        <v-flex xs12>
-          <!-- <v-select :items="subjects.title" label="Liste des veilles" multi-line></v-select> -->
-
-          <v-select :items="subjects" item-text="title" item-value="title" return-object label="Liste des Veilles" v-model="subject" @change="consoleLog"></v-select>
-        </v-flex>
-      </v-layout>
-
-      <!-- List -->
-      <v-layout row wrap style="overflow:auto;">
-            <v-container wrap>
-             <template v-if="subject.title !== undefined" :data="subject"> 
-               {{subject.title}} par {{subject.author}}
-             </template>
-            </v-container>
-      </v-layout>
-
-
+  <v-container grid>
+    <!-- Filter options -->
+    <v-layout row wrap>
+      <v-flex xs12>
+  
+        <v-select v-model="veille" :items="veilles" item-text="title" item-value="title" return-object label="Liste des Veilles" @change="consoleLog"></v-select>
+      </v-flex>
+    </v-layout>
+  
+    <!-- Affichage veille -->
+    <v-card>
+      <v-container fluid style="min-height: 300px;" grid-list-lg>
+        <template v-if="veille.title !== undefined" :data="veille"> 
+               <div class="headline">{{veille.title}}</div>
+               <v-divider></v-divider>
+               <br/>
+               <p>Auteur(s) : <span :key="author" v-for="(author, index) in veille.authors">{{ author }}<span v-if="index + 1 < veille.authors.length" :key="index"> et </span></span></p>
+               <p>Date : {{ veille.date | formatDate }}</p>
+               <p>{{veille.comments}}</p>
+               <p :key="link" v-for="(link, index) in veille.links"> <a :href="link">{{ link }}</a> <span v-if="index + 1 < veille.links.length" :key="index"> </span></p>
+        </template>
+      <template v-else>
+        <p>Sélectionner une veille dans la liste.</p>
+      </template>
+          </v-container>
+        </v-card>
     </v-container>
 </template>
 
@@ -26,42 +32,30 @@
 <script>
   /* eslint-disable */
   import moment from "moment";
+  import {
+    veillesRef
+  } from './firebase';
   
   export default {
     name: "VeilleDetails",
+    firebase: {
+      veilles: veillesRef
+    },
     data() {
       return {
-        subject: {},
-        subjects: [{
-            title: "Tout savoir sur VueJS",
-            author: "Raphael",
-            themes: ["VueJS", "JS"],
-            date: "2017-11-23T18:25:43.511Z"
-          },
-          {
-            title: "Angular VS ReactJS",
-            author: "Henry",
-            themes: ["VueJS", "Angular", "JS"],
-            date: "2018-01-10T18:25:43.511Z"
-          },
-          {
-            title: "Apprendre et étudier le JS",
-            author: "Victoria",
-            themes: ["VueJS", "JS"],
-            date: "2017-12-12T18:25:43.511Z"
-          },
-          {
-            title: "Apprendre le CSS",
-            author: "Nicolas",
-            themes: ["CSS"],
-            date: ""
-          }
-        ]
+        veille: [],
       };
     },
     methods: {
-      consoleLog () {
+      consoleLog() {
         console.log(this.subject.title);
+      }
+    },
+      filters: {
+      formatDate: function(value) {
+        if (value) {
+          return moment(String(value)).format("DD/MM/YY");
+        }
       }
     }
   };
