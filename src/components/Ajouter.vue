@@ -31,13 +31,15 @@
             </v-layout>
             <v-layout row wrap>
                 <v-flex xs12>
-                    <v-text-field v-model="link" placeholder="Nouveau lien"></v-text-field>
+                    <!-- <p :key="item" v-for="item in veille.links">{{item}}</p> -->
+                    <v-text-field v-model="link" placeholder="Nouveau lien"></v-text-field>  
                     <v-btn small depressed color="grey" v-on:click="addLink">Ajouter lien</v-btn>
                 </v-flex>
             </v-layout>
         
             <v-btn color="primary" v-on:click="addVeille">Ajouter veille</v-btn>
         </v-container>
+        <v-snackbar top right color="cyan" timeout="2000" v-model="snackbar">Lien ajouté.</v-snackbar>
     </div>
 </template>
 
@@ -54,8 +56,9 @@
         data() {
             return {
                 displayDatePicker:false,
-                auteurs: authors,
+                snackbar:false,
                 themes: themes,
+                auteurs: authors,
                 link: '',
                 veille: {
                     title: '',
@@ -68,6 +71,7 @@
                 }
             }
         },
+        props : ['displayPage'],
         firebase: {
             veilles: veillesRef
         },
@@ -79,9 +83,13 @@
                 veillesRef.push(this.veille)
                 this.link = ''
                 this.veille.links = []
+                this.$emit('closeAjouter')
+
             },
             addLink() {
+                this.snackbar=true;
                 this.veille.links.push(this.link)
+                this.link= ''
             }
         }
     }

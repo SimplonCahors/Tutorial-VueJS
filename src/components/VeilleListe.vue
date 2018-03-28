@@ -17,7 +17,7 @@
           <template v-for="(veille, index) in veillesFiltered">
                   <v-list-tile-content :key="veille">
                     <v-list-tile-sub-title v-if="veille.date"> {{ veille.date | formatDate }}</v-list-tile-sub-title>
-                    <v-list-tile-title><strong>{{ veille.title }}</strong> par 
+                    <v-list-tile-title @click="displayVeille(veille.title)"><strong>{{ veille.title }}</strong> par 
                     <span :key="author" v-for="(author, index) in veille.authors">{{ author }}<span v-if="index + 1 < veille.authors.length" :key="index"> et </span></span></v-list-tile-title>
                   </v-list-tile-content>
                   <v-divider v-if="index + 1 < veilles.length" :key="index"></v-divider>
@@ -90,6 +90,10 @@
       }
     },
     methods: {
+      displayVeille: function(veilleTitle) {
+        console.log(veilleTitle)
+        this.$emit('goToVeille', veilleTitle)
+      },
       normlizeText: function(str) {
         // Change to lower case and remove first & last spaces
         str = str.toLowerCase().trim();

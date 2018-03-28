@@ -12,18 +12,21 @@
     <v-card>
       <v-container fluid style="min-height: 300px;" grid-list-lg>
         <template v-if="veille.title !== undefined" :data="veille"> 
-               <div class="headline">{{veille.title}}</div>
-               <v-divider></v-divider>
-               <br/>
-               <p>Auteur(s) : <span :key="author" v-for="(author, index) in veille.authors">{{ author }}<span v-if="index + 1 < veille.authors.length" :key="index"> et </span></span></p>
-               <p>Date : {{ veille.date | formatDate }}</p>
-               <p>{{veille.comments}}</p>
-               <p :key="link" v-for="(link, index) in veille.links"> <a :href="link">{{ link }}</a> <span v-if="index + 1 < veille.links.length" :key="index"> </span></p>
+                 <div class="headline">{{veille.title}}</div>
+                 <v-divider></v-divider>
+                 <br/>
+                 <p>Auteur(s) : <span :key="author" v-for="(author, index) in veille.authors">{{ author }}<span v-if="index + 1 < veille.authors.length" :key="index"> et </span></span></p>
+                 <p>Date : {{ veille.date | formatDate }}</p>
+                 <p>{{veille.comments}}</p>
+                 <p :key="link" v-for="(link, index) in veille.links"> <a :href="link">{{ link }}</a> <span v-if="index + 1 < veille.links.length" :key="index"> </span></p>
+                 
         </template>
-      <template v-else>
-        <p>Sélectionner une veille dans la liste.</p>
-      </template>
+        <template v-else>
+          <p>
+            Sélectionner une veille dans la liste.</p>
+        </template>
           </v-container>
+          <v-btn color="primary" v-on:click="removeVeille(veille['.key'])">Supprimer la veille</v-btn>
         </v-card>
     </v-container>
 </template>
@@ -43,15 +46,22 @@
     },
     data() {
       return {
-        veille: [],
+        veille: {},
       };
+    },
+    mounted: function() {
+      this.veille = this.veilles[0]
     },
     methods: {
       consoleLog() {
-        console.log(this.subject.title);
-      }
+        console.log(this.veille);
+      },
+      removeVeille(key) {
+        veillesRef.child(key).remove();
+        this.$emit('closeAjouter')
+      },
     },
-      filters: {
+    filters: {
       formatDate: function(value) {
         if (value) {
           return moment(String(value)).format("DD/MM/YY");
