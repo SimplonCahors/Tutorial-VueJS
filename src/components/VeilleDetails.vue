@@ -57,8 +57,11 @@
         console.log(this.veille);
       },
       removeVeille(key) {
-        veillesRef.child(key).remove();
-        this.$emit('closeAjouter')
+        let confirmation = confirm('Voulez-vous vraiment faire ça ? La veille sera irrémédiablement dissoute dans le néant.')
+        if (confirmation === true) {
+          veillesRef.child(key).remove();
+          this.$emit('closeAjouter')
+        }
       },
     },
     filters: {

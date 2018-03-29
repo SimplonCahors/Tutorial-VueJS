@@ -80,10 +80,13 @@
         },
         methods: {
             addVeille() {
-                veillesRef.push(this.veille)
-                this.link = ''
-                this.veille.links = []
-                this.$emit('closeAjouter')
+                let confirmation = confirm("Ajouter cette veille ?")
+                if (confirmation === true) {
+                    veillesRef.push(this.veille)
+                    this.link = ''
+                    this.veille.links = []
+                    this.$emit('closeAjouter')
+                }
 
             },
             addLink() {
