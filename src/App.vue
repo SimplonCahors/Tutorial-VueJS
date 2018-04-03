@@ -63,16 +63,34 @@
   };
 </script>
 
-<style>
-  #app {
-    min-width: 500px;
-    max-width: 500px;
-    height: 400px;
-    margin: auto;
-    font-family: "Avenir", Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    color: #2c3e50;
+<style type="sass">
+#app {
+  width:500px;
+  height: 400px;
+  margin: auto;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+}
+
+@media all and (max-device-width: 780px)  {
+
+  #app{
+  margin: 0;
+  width:100vw;
+  height: 100vh;
   }
+  a.tabs__item{
+    width: 33vw;
+  }
+  div.toolbar__title{
+    width: 100vw;
+  }
+  div.list.list--two-line{
+    font-size: 1.2rem;
+
+  }
+}
 </style>
