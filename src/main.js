@@ -2,15 +2,23 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App'
-import Ajouter from './components/ajouter'
-import VeilleListe from './components/VeilleListe'
-import VueFire from 'vuefire'
-// import Vuetify from 'vuetify'
-// import('../node_modules/vuetify/dist/vuetify.min.css')
- 
-Vue.use(VueFire)
-// Vue.use(Vuetify)
-Vue.config.productionTip = false 
+import Vuetify from 'vuetify'
+import 'vuetify/dist/vuetify.min.css'
+import colors from 'vuetify/es5/util/colors'
+
+import firebase from 'firebase'
+var VueFire = require('vuefire')
+
+
+Vue.use(VueFire);
+Vue.use(Vuetify, {
+  theme: {
+    primary: colors.orange.darken2,
+    secondary: colors.orange.darken1,
+    accent: colors.orange.darken2,
+    error: colors.red.accent3
+  }
+})
 
 const NotFound = { template: '<p>Page not found</p>' }
 const About = { template: '<p>about page</p>' }
