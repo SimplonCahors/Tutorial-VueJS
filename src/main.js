@@ -2,12 +2,23 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App'
-// import Materials from "vue-materials"
-// Vue.use(Materials)
 import Vuetify from 'vuetify'
-Vue.use(Vuetify)
+import 'vuetify/dist/vuetify.min.css'
+import colors from 'vuetify/es5/util/colors'
 
-import('../node_modules/vuetify/dist/vuetify.min.css')
+import firebase from 'firebase'
+var VueFire = require('vuefire')
+
+
+Vue.use(VueFire);
+Vue.use(Vuetify, {
+  theme: {
+    primary: colors.orange.darken2,
+    secondary: colors.orange.darken1,
+    accent: colors.orange.darken2,
+    error: colors.red.accent3
+  }
+})
 
 Vue.config.productionTip = false
 
