@@ -7,13 +7,14 @@
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
-    "test": "npm run unit",
+    "test": "mocha",
     "lint": "eslint --ext .js,.vue src test/unit",
     "build": "node build/build.js"
   },
   "dependencies": {
     "firebase": "^4.11.0",
     "npm": "^5.7.1",
+    "unit.js": "^2.0.0",
     "vue": "^2.5.2",
     "vuefire": "^1.4.5",
     "vuetify": "^1.0.6"
@@ -45,6 +46,7 @@
     "file-loader": "^1.1.6",
     "friendly-errors-webpack-plugin": "^1.6.1",
     "html-webpack-plugin": "^2.30.1",
+    "mocha": "^5.0.5",
     "moment": "^2.21.0",
     "node-notifier": "^5.1.2",
     "optimize-css-assets-webpack-plugin": "^3.2.0",

@@ -17,8 +17,14 @@
           <template v-for="(veille, index) in veillesFiltered">
                   <v-list-tile-content :key="veille">
                     <v-list-tile-sub-title v-if="veille.date"> {{ veille.date | formatDate }}</v-list-tile-sub-title>
+                    
+                    <!-- <v-list-tile-title @click="displayVeille(veille.title)"><strong>{{ veille.title }}</strong> par 
+                    <span :key="author" v-for="(author, index) in veille.authors">{{ author }}<span v-if="index + 1 < veille.authors.length" :key="index"> et </span></span></v-list-tile-title> -->
+
                     <v-list-tile-title @click="displayVeille(veille.title)"><strong>{{ veille.title }}</strong> par 
-                    <span :key="author" v-for="(author, index) in veille.authors">{{ author }}<span v-if="index + 1 < veille.authors.length" :key="index"> et </span></span></v-list-tile-title>
+                    <span :key="author" v-for="(author, index) in authors">{{ author }}<span v-if="index + 1 < authors.length" :key="index"> et </span></span></v-list-tile-title>
+
+
                   </v-list-tile-content>
                   <v-divider v-if="index + 1 < veilles.length" :key="index"></v-divider>
           </template>
@@ -42,7 +48,7 @@
 <script>
   /* eslint-disable */
   import moment from "moment";
-  import authors from './authors.json';
+  // import authors from './authors.json';
   import themes from './themes.json';
   import {
     veillesRef
@@ -52,7 +58,8 @@
     name: "VeilleListe",
     data() {
       return {
-        auteurs: authors,
+        authors: ['Charlotte', 'Antoine', 'Célia'],
+        // auteurs: authors,
         searchTxt: "",
         searchTheme: "Afficher tout",
         sortKey: "title",
